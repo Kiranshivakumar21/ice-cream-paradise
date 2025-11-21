@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ice Cream Paradise</title>
+  <style>
+    :root {
+      --accent1: #6a89cc;
+      --accent2: #a8ff78;
+      --accent3: #009ffd;
+      --accent4: #ff99ac;
+      --header-bg: linear-gradient(90deg, #6a89cc 40%, #a8ff78 100%);
+      --card-bg: #f3f6fb;
+      --text-main: #333;
+      --header-height: 72px;
+    }
+    body {
+      margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background: #fdfcff; color: var(--text-main);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    header {
+      background: var(--header-bg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 8px;
+      box-sizing: border-box;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: var(--header-height);
+      z-index: 20;
+      animation: fadeDown 1.2s;
+      overflow: hidden;
+    }
+    .logo { font-size: 2rem; font-weight: bold; color: #fff; user-select: none; }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      align-items: center;
+      width: auto;
+      max-width: 100%;
+    }
+    nav a {
+      text-decoration: none;
+      color: #fff;
+      padding: 8px 12px;
+      font-weight: 500;
+      font-size: 1rem;
+      border-radius: 8px;
+      transition: 0.3s;
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+      flex-shrink: 1;
+      box-sizing: border-box;
+    }
+    nav a:hover, nav a.active {
+      color: var(--accent2);
+      text-shadow: 0 0 10px #fff;
+    }
+    @media (max-width: 1100px) {
+      header { padding: 10px 3px;}
+      nav a { padding: 8px 7px; font-size: 0.98rem;}
+      .logo { font-size: 1.5rem;}
+    }
+    @media (max-width: 660px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 7px 2px;
+        height: auto;
+      }
+      .logo { font-size: 1.13rem; margin-bottom: 5px;}
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        width: 100%;
+      }
+      nav a {
+        padding: 5px 12px;
+        font-size: 0.97rem;
+        margin: 1px 0;
+        width: 100vw;
+        box-sizing: border-box;
+        text-align: right;
+      }
+    }
+    section {
+      padding: 30px 0 36px 0;
+      scroll-margin-top: var(--header-height);
+    }
+    h1, h2, h3 { font-family: 'Poppins', sans-serif;}
+    .hero {
+        background: url('./images/Generated\ Image\ November\ 17\,\ 2025\ .png') no-repeat center center/cover;
+        color: #fff;
+        position: relative;
+        box-sizing: border-box;
+        height: 80vh;
+        min-height: 420px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        animation: fadeUp 1.5s;
+        margin-top: var(--header-height);
+    }
+    .hero::after {
+        content:"";
+        position: absolute;
+        top:0; left:0; width:100%; height:100%;
+        background:rgba(0,0,0,0.30);
+        z-index:0;
+    }
+    .hero-content {
+      position: relative;
+      max-width:650px;
+      z-index:2;
+      animation: bounceIn 1.2s;
+    }
+    .hero h1 { font-size: 2.7rem; margin-bottom: 12px;}
+    .hero p { font-size: 1.15rem; margin-bottom: 32px;}
+    .btn {
+      background: var(--accent3);
+      color: #fff;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 28px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,.13);
+      transition: background .28s,transform .28s, box-shadow .28s;
+      animation: fadeUp 2.2s;
+      user-select: none;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn:hover {
+      background: var(--accent2);
+      color: #333;
+      transform: scale(1.08);
+      box-shadow: 0 0 16px #a8ff78;
+    }
+    .flavor-grid {
+      display:flex;
+      gap: 32px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .flavor-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 3px 14px rgba(106,137,204,.09);
+      padding:22px 10px 12px 10px;
+      width:160px;
+      text-align:center;
+      animation: cardEnter 1s backwards;
+      transition: transform .28s, box-shadow .28s;
+    }
+    .flavor-card:hover {
+      transform: scale(1.08);
+      box-shadow:0 0 22px #009ffd55;
+    }
+    .flavor-card img {
+      width:100px;
+      height:100px;
+      object-fit:cover;
+      border-radius: 50%;
+      box-shadow: 0 1px 6px rgba(0,0,0,.09);
+    }
+    .flavor-card h3 { font-size:1.13rem; margin: 12px 0 6px 0;}
+    .product-grid {
+      display: flex;
+      gap:28px;
+      flex-wrap: wrap;
+      justify-content:center;
+      margin-bottom:32px;
+    }
+    .product-card {
+      background: #f4fded;
+      border-radius:16px;
+      box-shadow:0 3px 16px #6a89cc15;
+      width:180px;
+      padding:20px 14px;
+      text-align:center;
+      margin-bottom:12px;
+      animation: cardEnter 1.3s backwards;
+      transition: box-shadow .33s, transform .22s;
+    }
+    .product-card:hover {
+      box-shadow:0 0 19px #a8ff7899;
+      transform:scale(1.05);
+    }
+    .product-card img {
+      width:90px;
+      height:90px;
+      border-radius:14px;
+      object-fit:cover;
+    }
+    .product-card h3 { margin:12px 0 5px 0;}
+    .price {
+      color: var(--accent3);
+      font-weight: bold;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .buy-btn {
+      background: var(--accent3);
+      border:none;
+      color:#fff;
+      padding:7px 18px;
+      border-radius:18px;
+      font-weight:600;
+      cursor:pointer;
+      margin-top:8px;
+      transition:background .24s,transform .28s;
+      user-select: none;
+    }
+    .buy-btn:hover {
+      background:var(--accent1);
+      transform: scale(1.11);
+    }
+    .offer-grid {
+      display:flex;
+      gap:26px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:18px;
+    }
+    .offer-card {
+      background: #e5eaf8;
+      border-radius:17px;
+      box-shadow:0 2px 14px #009ffd22;
+      padding:23px 16px 19px 16px;
+      width:210px;
+      text-align:center;
+      position:relative;
+      animation: fadeUp 1s;
+      transition:transform .28s, box-shadow .26s;
+    }
+    .offer-card img {
+      width:90px;
+      height:90px;
+      border-radius:14px;
+      object-fit:cover;
+    }
+    .offer-card:hover {
+      transform: scale(1.07);
+      box-shadow:0 0 24px #009ffd55;
+    }
+    .discount-tag {
+      position:absolute;
+      top:11px; left:11px;
+      background:var(--accent3);
+      color:#fff;
+      font-weight:bold;
+      padding:7px 14px;
+      border-radius:13px;
+      font-size:0.95rem;
+      box-shadow:0 3px 8px #009ffd22;
+      animation: pulse 2s infinite;
+      user-select: none;
+    }
+    .offer-btn {
+      background:var(--accent2);
+      border:none;
+      color:#333;
+      font-weight:900;
+      padding:8px 14px;
+      border-radius:15px;
+      cursor:pointer;
+      margin-top:9px;
+      transition:background .22s,transform .22s;
+      user-select: none;
+    }
+    .offer-btn:hover {
+      background:var(--accent1);
+      color:#fff;
+      transform:scale(1.08);
+    }
+    .about-text {
+      text-align: center;
+      margin: 0 auto 22px auto;
+      max-width: 620px;
+      padding: 0 16px;
+      font-size: 1.08rem;
+      display: block;
+    }
+    .about-section, .contact-section {
+      padding: 30px 0 24px;
+    }
+    .about-highlights {
+      display:flex;
+      gap:25px;
+      flex-wrap:wrap;
+      margin:25px 0;
+      justify-content: center;
+    }
+    .highlight {
+      background: #eafaea;
+      padding:17px 13px;
+      border-radius:13px;
+      width:190px;
+      text-align:center;
+      box-shadow:0 2px 11px #009ffd12;
+      animation: bounceIn 1.2s;
+    }
+    .highlight h3 { margin-bottom:8px;}
+    .contact-container {
+      display: flex;
+      gap:38px;
+      flex-wrap:wrap;
+      justify-content: center;
+    }
+    .contact-form {
+      background:#f4fded;
+      border-radius:18px;
+      padding:23px;
+      box-shadow:0 2px 9px #6a89cc18;
+      width:300px;
+      box-sizing: border-box;
+    }
+    .contact-form input, .contact-form textarea {
+      width:100%;
+      padding:8px;
+      border-radius:6px;
+      border:1px solid #6a89cc33;
+      margin-bottom:8px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      resize: vertical;
+    }
+    .contact-form button {
+      background:var(--accent3);
+      color:#fff;
+      border:none;
+      padding:8px 18px;
+      border-radius:12px;
+      font-weight:600;
+      cursor:pointer;
+      user-select: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+    }
+    .contact-info {
+      background:#e5eaf8;
+      border-radius:15px;
+      padding:17px;
+      width:230px;
+      box-shadow:0 2px 7px #009ffd12;
+      box-sizing: border-box;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      font-family: 'Poppins', sans-serif;
+    }
+    footer {
+      background:var(--accent1);
+      color:#fff;
+      text-align:center;
+      padding:20px 0;
+      font-size:1.1rem;
+      box-shadow: 0 -2px 7px #a8ff7855;
+      user-select: none;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(42px);}
+      to   { opacity: 1; transform: translateY(0);}
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-32px);}
+      to   { opacity: 1; transform: translateY(0);}
+    }
+    @keyframes bounceIn {
+      0% { transform: scale(0.8); opacity: 0;}
+      68% { transform: scale(1.13); opacity: 0.97;}
+      100% { transform: scale(1); opacity: 1;}
+    }
+    @keyframes cardEnter {
+      from { opacity: 0; transform: scale(0.9) translateY(24px);}
+      to   { opacity: 1; transform: scale(1) translateY(0);}
+    }
+    @keyframes pulse {
+      0%,100% {box-shadow: 0 0 12px #009ffd66;}
+      50% {box-shadow: 0 0 28px #a8ff78;}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header/Nav -->
+  <header>
+    <div class="logo">Ice Cream Paradise</div>
+    <nav>
+      <a href="#home" class="active" tabindex="0">Home</a>
+      <a href="#products" tabindex="0">Products</a>
+      <a href="#offers" tabindex="0">Offers</a>
+      <a href="#about" tabindex="0">About</a>
+      <a href="#contact" tabindex="0">Contact</a>
+    </nav>
+  </header>
+  <!-- Home/Hero -->
+  <section id="home" class="hero" tabindex="-1">
+    <div class="hero-content">
+      <h1>Delight in Every Scoop!</h1>
+      <p>Welcome to Ice Cream Paradise, your favorite destination for creamy, dreamy ice creams. Order your favorite flavors today!</p>
+      <a href="#products" class="btn">Order Now</a>
+    </div>
+  </section>
+  <section tabindex="-1">
+    <h2 style="text-align:center">Our Popular Flavors</h2>
+    <div class="flavor-grid">
+      <div class="flavor-card">
+        <img src="./images/Chocochip-Oatmeal.png " alt="Chocolate"/>
+        <h3>Chocolate Fudge</h3>
+      </div>
+      <div class="flavor-card">
+        <img src="../15.11.25/images/vannila.png" alt="Vanilla"/>
+        <h3>Vanilla Delight</h3>
+      </div>
+      <div class="flavor-card">
+        <img src="../15.11.25/images/strawbery_1.png" alt="Strawberry"/>
+        <h3>Strawberry Swirl</h3>
+      </div>
+      <div class="flavor-card">
+        <img src="../15.11.25/images/pista.jpg" alt="Pista"/>
+        <h3>Pista Magic</h3>
+      </div>
+    </div>
+  </section>
+  <section id="products" tabindex="-1">
+    <h1 style="text-align:center">Our Ice Cream Collection</h1>
+    <p class="subtitle" style="text-align:center">Explore our wide range of flavors from classic favorites to seasonal specials!</p>
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="../15.11.25/images/pista.jpg" alt="Pista Magic"/>
+        <h3>Pista Magic</h3>
+        <p>Fresh pista flavor with chocolate chunks.</p>
+        <span class="price">₹120</span>
+        <button class="buy-btn" tabindex="0">Order Now</button>
+      </div>
+      <div class="product-card">
+        <img src="../15.11.25/images/blueberry.png" alt="Blueberry"/>
+        <h3>Blueberry Blast</h3>
+        <p>Rich, creamy Blueberry for true choco lovers.</p>
+        <span class="price">₹130</span>
+        <button class="buy-btn" tabindex="0">Order Now</button>
+      </div>
+      <div class="product-card">
+        <img src="../15.11.25/images/strawbery.png" alt="Strawberry Swirl"/>
+        <h3>Strawberry Swirl</h3>
+        <p>Fresh strawberrys, swirled with cream.</p>
+        <span class="price">₹110</span>
+        <button class="buy-btn" tabindex="0">Order Now</button>
+      </div>
+      <div class="product-card">
+        <img src="../15.11.25/images/vannila.png" alt="Vanilla Ice"/>
+        <h3>Vanilla Ice</h3>
+        <p>Classic vanilla ice cream, always a favorite!</p>
+        <span class="price">₹99</span>
+        <button class="buy-btn" tabindex="0">Order Now</button>
+      </div>
+    </div>
+  </section>
+  <section id="offers" tabindex="-1">
+    <h1 style="text-align:center">Special Offers & Discounts</h1>
+    <p class="subtitle" style="text-align:center">Grab your favorite flavors with our latest deals! Limited time only.</p>
+    <div class="offer-grid">
+      <div class="offer-card">
+        <div class="discount-tag">20% OFF</div>
+        <img src="../15.11.25/images/familipack.webp" alt="Family Pack Offer"/>
+        <h3>Family Combo Pack</h3>
+        <p>Buy 3 scoops and get 1 free! Perfect for sharing.</p>
+        <button class="offer-btn" tabindex="0">Claim Offer</button>
+      </div>
+      <div class="offer-card">
+        <div class="discount-tag">Buy 1 Get 1</div>
+        <img src="../15.11.25/images/couples.webp" alt="Chocolate Offer"/>
+        <h3>Chocolate Lovers Deal</h3>
+        <p>Order Chocolate Heaven & get another scoop free!</p>
+        <button class="offer-btn" tabindex="0">Claim Offer</button>
+      </div>
+      <div class="offer-card">
+        <div class="discount-tag">30% OFF</div>
+        <img src="../15.11.25/images/blueberry.png" alt="Blueberry Offer"/>
+        <h3>Blueberry Blast</h3>
+        <p>Special price on our best-selling Blueberry flavor.</p>
+        <button class="offer-btn" tabindex="0">Claim Offer</button>
+      </div>
+      <div class="offer-card">
+        <div class="discount-tag">Free Cone</div>
+        <img src="../15.11.25/images/pista.jpg" alt=" Pista Offer"/>
+        <h3>Pista Monday</h3>
+        <p>Every Monday, get a free cone with every Pista order!</p>
+        <button class="offer-btn" tabindex="0">Claim Offer</button>
+      </div>
+    </div>
+  </section>
+  <section id="about" class="about-section" tabindex="-1">
+    <h1 style="text-align:center">About Ice Cream Paradise</h1>
+    <p class="about-text">
+      Welcome to <strong>Ice Cream Paradise</strong>, your local paradise for creamy delights and frozen happiness! Serving joy in scoops since 2025, we offer rich, flavorful, and freshly made ice creams that bring smiles to all ages.
+    </p>
+    <div class="about-highlights">
+      <div class="highlight">
+        <h3>Fresh Ingredients</h3>
+        <p>We use only natural milk, fruits, and premium toppings.</p>
+      </div>
+      <div class="highlight">
+        <h3>Creative Flavors</h3>
+        <p>From classic vanilla to Oreo Overload, we have it all!</p>
+      </div>
+      <div class="highlight">
+        <h3>Customer Love</h3>
+        <p>Your happiness inspires every scoop.</p>
+      </div>
+    </div>
+  </section>
+  <section id="contact" class="contact-section" tabindex="-1">
+    <h1 style="text-align:center">Contact Us</h1>
+    <p style="text-align:center">
+      We'd love to hear from you! Send your queries, feedback, or just say hello.
+    </p>
+    <div class="contact-container">
+      <form class="contact-form" onsubmit="alert('Form submission is not implemented in this demo'); return false;">
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Your Email" required />
+        <textarea placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+      <div class="contact-info">
+        <h2>Visit Us</h2>
+        <p>Ice Cream Paradise</p>
+        <p>123 Sweet Street, Madurai , Tamilnadu , India</p>
+        <p>📞 +91 98765 43210</p>
+        <p>📧 icecreamparadise@gmail.com</p>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <p>2025 Ice Cream Paradise – Stay Cool, Stay Sweet</p>
+  </footer>
+  <script>
+    const HEADER_HEIGHT = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height'));
+    function scrollToSection(event) {
+      event.preventDefault();
+      const targetId = this.getAttribute("href").slice(1);
+      const targetSection = document.getElementById(targetId);
+      if (!targetSection) return;
+      const elementPosition = targetSection.getBoundingClientRect().top;
+      const offsetPosition = window.pageYOffset + elementPosition - HEADER_HEIGHT + 1;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+      document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+      this.classList.add('active');
+    }
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', scrollToSection);
+    });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.style.opacity = "1";
+          entry.target.style.transform = "scale(1) translateY(0)";
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.15});
+    document.querySelectorAll('.flavor-card,.product-card,.offer-card,.highlight').forEach(card => {
+      card.style.opacity = "0";
+      card.style.transform = "scale(0.9) translateY(24px)";
+      observer.observe(card);
+    });
+  </script>
+</body>
+</html>
